@@ -4,8 +4,11 @@
   "main": "index.js",
   "author": "Henry Emeka Obadoni <47888360+jediiry@users.noreply.github.com>",
   "license": "MIT",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "node index.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
