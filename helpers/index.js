@@ -1,28 +1,27 @@
-const jwt = require("jsonwebtoken"),
-  bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 
-const encodeToken = (payload) => {
-  const token = jwt.sign(payload, process.env.SECRET, {
-    expiresIn: "1h",
+const nodeMailer = async (payload) => {
+  let transporter = nodemailer.createTransport({
+    host: process.env.MAIL_SERVER,
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.MAIL_FROM,
+      pass: process.env.MAIL_PASSWORD,
+    },
   });
-  return token;
-};
-const decodeToken = (payload) => {
-  const decoded = jwt.verify(payload, process.env.SECRET);
-  return decoded;
-};
 
-const hashCredential = (payload) => {
-  return bcrypt.hash(payload, Number(process.env.HASH_DIGIT));
-};
+  let info = await transporter.sendMail({
+    from: `"Hello Obadoni 👻" <${process.env.MAIL_FROM}>`,
+    to: process.env.MAIL_TO,
+    subject: "Lead from Website",
+    html: payload,
+  });
 
-const compareCredential = (payload) => {
-  return bcrypt.compare(payload.newPassword, payload.oldPassword);
+  if (!info.messageId)
+    throw new Error("Unable to process request, kinndly try again later");
 };
 
 module.exports = {
-  encodeToken,
-  decodeToken,
-  hashCredential,
-  compareCredential,
+  nodeMailer,
 };

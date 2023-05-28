@@ -3,7 +3,6 @@ require("dotenv").config();
 // imports
 const express = require("express"),
   user = require("./routes/user"),
-  auth = require("./routes/auth"),
   bodyParser = require("body-parser");
 
 const instance = express(),
@@ -13,7 +12,6 @@ instance.use(bodyParser.json());
 instance.use(bodyParser.urlencoded({ extended: true }));
 
 instance.use("/user", user);
-instance.use("/auth", auth);
 
 instance.use((req, res) => {
   const error = new Error("Router not found");
